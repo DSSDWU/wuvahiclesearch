@@ -1,133 +1,1019 @@
+
+
 <!DOCTYPE html>
 <html lang="th">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>แสดงข้อมูลรถนักศึกษา</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-</head>
-<body class="bg-gray-50 p-6 font-sans">
-
-  <h1 class="text-2xl font-bold mb-4 text-center">ข้อมูลการลงทะเบียนรถ</h1>
-
-  <div id="studentInfo" class="bg-white p-6 rounded shadow">
-    <p><strong>รหัสนักศึกษา:</strong> <span id="studentId">-</span></p>
-    <p><strong>ชื่อ-สกุล:</strong> <span id="fullName">-</span></p>
-    <p><strong>สำนักวิชา:</strong> <span id="faculty">-</span></p>
-    <p><strong>เบอร์โทร:</strong> <span id="phoneNumber">-</span></p>
-    <p><strong>หอพัก:</strong> <span id="residence">-</span></p>
-    <p><strong>ที่อยู่:</strong> <span id="addressDetail">-</span></p>
-    <p><strong>ผู้ติดต่อฉุกเฉิน:</strong> <span id="emergencyContact">-</span></p>
-    <p><strong>ความสัมพันธ์:</strong> <span id="relationship">-</span></p>
-    <p><strong>เบอร์ฉุกเฉิน:</strong> <span id="emergencyPhone">-</span></p>
-    <p><strong>ประเภทรถ:</strong> <span id="vehicleType">-</span></p>
-    <p><strong>ยี่ห้อ:</strong> <span id="brand">-</span></p>
-    <p><strong>ทะเบียน:</strong> <span id="licensePlate">-</span></p>
-    <p><strong>จังหวัด:</strong> <span id="province">-</span></p>
-    <p><strong>สี:</strong> <span id="color">-</span></p>
-    <label class="block mt-2 font-semibold">หมายเลขสติ๊กเกอร์:</label>
-    <input type="text" id="stickerNumber" class="border p-2 rounded w-full mt-1" />
-  </div>
-
-  <!-- ✅ ภาพรถทั้ง 4 ด้าน -->
-  <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
-    <div id="frontImageContainer" class="border rounded-lg p-4 shadow">
-      <h2 class="font-semibold mb-2">รูปด้านหน้า</h2>
-      <img id="frontImage" src="" class="w-full h-auto object-contain rounded" alt="รูปด้านหน้า">
-      <button onclick="zoomImage('frontImage')" class="mt-2 px-4 py-1 bg-blue-600 text-white rounded">ดูภาพเต็ม</button>
-    </div>
-
-    <div id="backImageContainer" class="border rounded-lg p-4 shadow">
-      <h2 class="font-semibold mb-2">รูปด้านหลัง</h2>
-      <img id="backImage" src="" class="w-full h-auto object-contain rounded" alt="รูปด้านหลัง">
-      <button onclick="zoomImage('backImage')" class="mt-2 px-4 py-1 bg-blue-600 text-white rounded">ดูภาพเต็ม</button>
-    </div>
-
-    <div id="leftImageContainer" class="border rounded-lg p-4 shadow">
-      <h2 class="font-semibold mb-2">รูปด้านซ้าย</h2>
-      <img id="leftImage" src="" class="w-full h-auto object-contain rounded" alt="รูปด้านซ้าย">
-      <button onclick="zoomImage('leftImage')" class="mt-2 px-4 py-1 bg-blue-600 text-white rounded">ดูภาพเต็ม</button>
-    </div>
-
-    <div id="rightImageContainer" class="border rounded-lg p-4 shadow">
-      <h2 class="font-semibold mb-2">รูปด้านขวา</h2>
-      <img id="rightImage" src="" class="w-full h-auto object-contain rounded" alt="รูปด้านขวา">
-      <button onclick="zoomImage('rightImage')" class="mt-2 px-4 py-1 bg-blue-600 text-white rounded">ดูภาพเต็ม</button>
-    </div>
-  </div>
-
-  <!-- ✅ JS Script -->
-  <script>
-    function displayStudentData(data) {
-      document.getElementById('studentId').textContent = data.studentId || '-';
-      document.getElementById('fullName').textContent = data.fullName || '-';
-      document.getElementById('faculty').textContent = data.faculty || '-';
-      document.getElementById('phoneNumber').textContent = data.phoneNumber || '-';
-      document.getElementById('residence').textContent = data.residence || '-';
-      document.getElementById('addressDetail').textContent = data.addressDetail || '-';
-      document.getElementById('emergencyContact').textContent = data.emergencyContact || '-';
-      document.getElementById('relationship').textContent = data.relationship || '-';
-      document.getElementById('emergencyPhone').textContent = data.emergencyPhone || '-';
-      document.getElementById('vehicleType').textContent = data.vehicleType || '-';
-      document.getElementById('brand').textContent = data.brand || '-';
-      document.getElementById('licensePlate').textContent = data.licensePlate || '-';
-      document.getElementById('province').textContent = data.province || '-';
-      document.getElementById('color').textContent = data.color || '-';
-      document.getElementById('stickerNumber').value = data.stickerNumber || '';
-
-      const imageMap = [
-        { id: 'frontImage', container: 'frontImageContainer', url: data.frontImage },
-        { id: 'backImage', container: 'backImageContainer', url: data.backImage },
-        { id: 'leftImage', container: 'leftImageContainer', url: data.leftImage },
-        { id: 'rightImage', container: 'rightImageContainer', url: data.rightImage }
-      ];
-
-      imageMap.forEach(image => {
-        const imgEl = document.getElementById(image.id);
-        const containerEl = document.getElementById(image.container);
-        if (imgEl && containerEl) {
-          imgEl.src = (image.url && image.url.startsWith('http')) ? image.url : 'https://via.placeholder.com/300x200?text=ไม่มีรูป';
-          containerEl.style.display = 'block';
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ระบบจัดการข้อมูลการขึ้นทะเบียนรถ - มหาวิทยาลัยวลัยลักษณ์</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <style>
+        :root {
+            --primary-color: #8FD694;
+            --primary-dark: #6DC173;
+            --primary-light: #C5E8C7;
+            --secondary-color: #ffffff;
+            --text-color: #2D3748;
+            --border-color: #D1FAD7;
         }
-      });
-    }
+        body {
+            background-color: #F7FFF8;
+            font-family: 'Sarabun', sans-serif;
+            color: var(--text-color);
+        }
+        .container {
+            background-color: var(--secondary-color);
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+        .header {
+            background-color: var(--primary-color);
+            color: #1A365D;
+            border-radius: 10px 10px 0 0;
+        }
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: #1A365D;
+            transition: all 0.3s;
+        }
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+        }
+        .btn-secondary {
+            background-color: #E2E8F0;
+            color: #4A5568;
+            transition: all 0.3s;
+        }
+        .btn-secondary:hover {
+            background-color: #CBD5E0;
+        }
+        .btn-danger {
+            background-color: #FED7D7;
+            color: #C53030;
+            transition: all 0.3s;
+        }
+        .btn-danger:hover {
+            background-color: #FEB2B2;
+        }
+        .section-title {
+            background-color: var(--primary-light);
+            border-left: 4px solid var(--primary-color);
+        }
+        .form-input {
+            border: 1px solid #D1D5DB;
+            border-radius: 0.375rem;
+            padding: 0.5rem 0.75rem;
+            width: 100%;
+        }
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(143, 214, 148, 0.3);
+        }
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: #1A365D;
+        }
+        .search-container {
+            background-color: var(--secondary-color);
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+        .data-card {
+            background-color: var(--secondary-color);
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            border-left: 4px solid var(--primary-color);
+        }
+        .data-label {
+            color: #718096;
+            font-weight: 500;
+        }
+        .data-value {
+            color: #2D3748;
+            font-weight: 400;
+        }
+        .image-gallery {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+        }
+        .image-container {
+            position: relative;
+            height: 200px;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+        }
+        .image-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .image-label {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: rgba(0, 0, 0, 0.6);
+            color: white;
+            padding: 4px 8px;
+            font-size: 0.75rem;
+        }
+        .loading {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            flex-direction: column;
+        }
+        .spinner {
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid var(--primary-color);
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin-bottom: 1rem;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .logo-container {
+            display: flex;
+            justify-content: center;
+            padding: 1rem;
+            background-color: white;
+            border-radius: 10px 10px 0 0;
+        }
+        .logo {
+            max-height: 80px;
+            width: auto;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.5);
+        }
+        .modal-content {
+            background-color: #fefefe;
+            margin: 10% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 600px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        .edit-icon {
+            cursor: pointer;
+            color: #4A5568;
+            transition: color 0.2s;
+        }
+        .edit-icon:hover {
+            color: var(--primary-dark);
+        }
+        .tab {
+            cursor: pointer;
+            padding: 10px 20px;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s;
+        }
+        .tab.active {
+            border-bottom: 3px solid var(--primary-color);
+            font-weight: 600;
+            color: var(--primary-dark);
+        }
+        .tab:hover:not(.active) {
+            background-color: #F0FFF4;
+        }
+        .image-modal {
+            display: none;
+            position: fixed;
+            z-index: 1001;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.9);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .image-modal-content {
+            max-width: 90%;
+            max-height: 90%;
+        }
+        .image-modal-close {
+            position: absolute;
+            top: 15px;
+            right: 35px;
+            color: #f1f1f1;
+            font-size: 40px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="min-h-screen py-6 px-4 sm:px-6">
+    <div id="loading" class="loading" style="display: none;">
+        <div class="spinner"></div>
+        <p class="text-lg font-medium text-gray-700">กำลังดำเนินการ กรุณารอสักครู่...</p>
+    </div>
 
-    function zoomImage(imageId) {
-      const img = document.getElementById(imageId);
-      if (!img || !img.src) return;
-      Swal.fire({
-        title: 'ภาพขยาย',
-        imageUrl: img.src,
-        imageAlt: 'ภาพรถ',
-        confirmButtonText: 'ปิด',
-        width: '80%',
-        padding: '1em'
-      });
-    }
+    <!-- Image Modal -->
+    <div id="imageModal" class="image-modal" style="display: none;">
+        <span class="image-modal-close" onclick="closeImageModal()">&times;</span>
+        <img class="image-modal-content" id="modalImage">
+    </div>
 
-    // 🧪 ตัวอย่างสำหรับทดสอบ
-    displayStudentData({
-      studentId: "68000001",
-      fullName: "นายตัวอย่าง ทดสอบ",
-      faculty: "วิศวกรรมศาสตร์",
-      phoneNumber: "0800000000",
-      residence: "หอ 2",
-      addressDetail: "123 หมู่ 1",
-      emergencyContact: "คุณพ่อ",
-      relationship: "บิดา",
-      emergencyPhone: "0899999999",
-      vehicleType: "จักรยานยนต์",
-      brand: "Yamaha",
-      licensePlate: "กข123",
-      province: "นครศรีธรรมราช",
-      color: "แดง",
-      stickerNumber: "STK-12345",
-      frontImage: "https://drive.google.com/uc?export=view&id=1bMJEjjRvxHyMOxIPnjeSk6pnHKF1ApBK",
-      backImage: "",
-      leftImage: "",
-      rightImage: ""
-    });
-  </script>
-</body>
+    <!-- Edit Modal -->
+    <div id="editModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeEditModal()">&times;</span>
+            <h2 class="text-xl font-bold mb-4">แก้ไขข้อมูล</h2>
+            <div id="editForm">
+                <!-- Form fields will be dynamically inserted here -->
+            </div>
+            <div class="flex justify-end mt-4">
+                <button class="btn-secondary py-2 px-4 rounded mr-2" onclick="closeEditModal()">ยกเลิก</button>
+                <button class="btn-primary py-2 px-4 rounded" onclick="saveEdit()">บันทึก</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="max-w-6xl mx-auto container">
+        <!-- Logo -->
+        <div class="logo-container">
+            <img src="https://www.wu.ac.th/uploads/logoWU_1631668089.png" alt="มหาวิทยาลัยวลัยลักษณ์" class="logo">
+        </div>
+        
+        <div class="header py-4 px-6 mb-6 text-center">
+            <h1 class="text-2xl font-bold">ระบบจัดการข้อมูลการขึ้นทะเบียนรถ</h1>
+            <h2 class="text-xl">มหาวิทยาลัยวลัยลักษณ์</h2>
+        </div>
+
+        <!-- Search Section -->
+        <div class="search-container p-6 mb-6">
+            <h3 class="text-lg font-semibold mb-4">ค้นหาข้อมูลการลงทะเบียน</h3>
+            <div class="flex flex-col md:flex-row gap-4">
+                <div class="flex-grow">
+                    <input type="text" id="searchInput" placeholder="กรอกรหัสนักศึกษา" class="form-input" maxlength="8" pattern="[0-9]{8}">
+                </div>
+                <div>
+                    <button id="searchButton" class="btn-primary py-2 px-6 rounded">ค้นหา</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Results Section -->
+        <div id="resultsContainer" class="p-6" style="display: none;">
+            <div class="flex border-b mb-4">
+                <div class="tab active" data-tab="info">ข้อมูลส่วนตัว</div>
+                <div class="tab" data-tab="vehicle">ข้อมูลรถ</div>
+                <div class="tab" data-tab="images">รูปภาพ</div>
+            </div>
+
+            <!-- Student Info Tab -->
+            <div id="infoTab" class="tab-content">
+                <div class="data-card p-4 mb-4">
+                    <div class="flex justify-between items-center mb-2">
+                        <h4 class="font-semibold text-lg">ข้อมูลส่วนตัว</h4>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <p class="data-label">รหัสนักศึกษา</p>
+                            <p class="data-value" id="studentId"></p>
+                            <span class="edit-icon" onclick="editField('studentId')">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 inline-block" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+                                </svg>
+                            </span>
+                        </div>
+                        <div>
+                            <p class="data-label">ชื่อ-สกุล</p>
+                            <p class="data-value" id="fullName"></p>
+                            <span class="edit-icon" onclick="editField('fullName')">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 inline-block" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+                                </svg>
+                            </span>
+                        </div>
+                        <div>
+                            <p class="data-label">สำนักวิชา</p>
+                            <p class="data-value" id="faculty"></p>
+                            <span class="edit-icon" onclick="editField('faculty')">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 inline-block" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+                                </svg>
+                            </span>
+                        </div>
+                        <div>
+                            <p class="data-label">เบอร์โทรศัพท์</p>
+                            <p class="data-value" id="phoneNumber"></p>
+                            <span class="edit-icon" onclick="editField('phoneNumber')">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 inline-block" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+                                </svg>
+                            </span>
+                        </div>
+                        <div>
+                            <p class="data-label">ที่พักปัจจุบัน</p>
+                            <p class="data-value" id="residence"></p>
+                            <span class="edit-icon" onclick="editField('residence')">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 inline-block" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+                                </svg>
+                            </span>
+                        </div>
+                        <div>
+                            <p class="data-label">ชื่อหอพัก/หมายเลขห้อง/บ้านเลขที่</p>
+                            <p class="data-value" id="addressDetail"></p>
+                            <span class="edit-icon" onclick="editField('addressDetail')">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 inline-block" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+                                </svg>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="data-card p-4 mb-4">
+                    <div class="flex justify-between items-center mb-2">
+                        <h4 class="font-semibold text-lg">ข้อมูลผู้ติดต่อกรณีฉุกเฉิน</h4>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <p class="data-label">ชื่อ-สกุล ผู้ติดต่อกรณีฉุกเฉิน</p>
+                            <p class="data-value" id="emergencyContact"></p>
+                            <span class="edit-icon" onclick="editField('emergencyContact')">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 inline-block" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+                                </svg>
+                            </span>
+                        </div>
+                        <div>
+                            <p class="data-label">ความสัมพันธ์กับนักศึกษา</p>
+                            <p class="data-value" id="relationship"></p>
+                            <span class="edit-icon" onclick="editField('relationship')">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 inline-block" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+                                </svg>
+                            </span>
+                        </div>
+                        <div>
+                            <p class="data-label">เบอร์โทรศัพท์ผู้ติดต่อกรณีฉุกเฉิน</p>
+                            <p class="data-value" id="emergencyPhone"></p>
+                            <span class="edit-icon" onclick="editField('emergencyPhone')">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 inline-block" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+                                </svg>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Vehicle Info Tab -->
+            <div id="vehicleTab" class="tab-content" style="display: none;">
+                <div class="data-card p-4 mb-4">
+                    <div class="flex justify-between items-center mb-2">
+                        <h4 class="font-semibold text-lg">ข้อมูลรถ</h4>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <p class="data-label">ประเภทรถ</p>
+                            <p class="data-value" id="vehicleType"></p>
+                            <span class="edit-icon" onclick="editField('vehicleType')">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 inline-block" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+                                </svg>
+                            </span>
+                        </div>
+                        <div>
+                            <p class="data-label">ยี่ห้อรถ</p>
+                            <p class="data-value" id="brand"></p>
+                            <span class="edit-icon" onclick="editField('brand')">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 inline-block" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+                                </svg>
+                            </span>
+                        </div>
+                        <div>
+                            <p class="data-label">เลขทะเบียนรถ</p>
+                            <p class="data-value" id="licensePlate"></p>
+                            <span class="edit-icon" onclick="editField('licensePlate')">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 inline-block" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+                                </svg>
+                            </span>
+                        </div>
+                        <div>
+                            <p class="data-label">จังหวัด</p>
+                            <p class="data-value" id="province"></p>
+                            <span class="edit-icon" onclick="editField('province')">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 inline-block" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+                                </svg>
+                            </span>
+                        </div>
+                        <div>
+                            <p class="data-label">สีรถ</p>
+                            <p class="data-value" id="color"></p>
+                            <span class="edit-icon" onclick="editField('color')">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 inline-block" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+                                </svg>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="data-card p-4 mb-4">
+                    <div class="flex justify-between items-center mb-2">
+                        <h4 class="font-semibold text-lg">หมายเลขสติกเกอร์</h4>
+                    </div>
+                    <div class="grid grid-cols-1 gap-4">
+                        <div>
+                            <p class="data-label">หมายเลขสติกเกอร์ประจำรถ</p>
+                            <div class="flex items-center mt-2">
+                                <input type="text" id="stickerNumber" class="form-input mr-2" placeholder="กรอกหมายเลขสติกเกอร์">
+                                <button id="saveStickerBtn" class="btn-primary py-2 px-4 rounded">บันทึก</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Images Tab -->
+            <div id="imagesTab" class="tab-content" style="display: none;">
+                <div class="data-card p-4 mb-4">
+                    <div class="flex justify-between items-center mb-4">
+                        <h4 class="font-semibold text-lg">รูปภาพรถ</h4>
+                    </div>
+                    <div class="image-gallery">
+                        <div class="image-container" id="frontImageContainer">
+                            <img id="frontImage" src="" alt="รูปด้านหน้า" onclick="openImageModal(this.src)">
+                            <div class="image-label">ด้านหน้า</div>
+                        </div>
+                        <div class="image-container" id="backImageContainer">
+                            <img id="backImage" src="" alt="รูปด้านหลัง" onclick="openImageModal(this.src)">
+                            <div class="image-label">ด้านหลัง</div>
+                        </div>
+                        <div class="image-container" id="leftImageContainer">
+                            <img id="leftImage" src="" alt="รูปด้านซ้าย" onclick="openImageModal(this.src)">
+                            <div class="image-label">ด้านซ้าย</div>
+                        </div>
+                        <div class="image-container" id="rightImageContainer">
+                            <img id="rightImage" src="" alt="รูปด้านขวา" onclick="openImageModal(this.src)">
+                            <div class="image-label">ด้านขวา</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- No Results Message -->
+        <div id="noResultsMessage" class="p-6 text-center" style="display: none;">
+            <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4">
+                <div class="flex">
+                    <div class="flex-shrink-0">
+                        <svg class="h-5 w-5 text-yellow-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+                        </svg>
+                    </div>
+                    <div class="ml-3">
+                        <p class="text-sm text-yellow-700">
+                            ไม่พบข้อมูลนักศึกษาที่ค้นหา กรุณาตรวจสอบรหัสนักศึกษาอีกครั้ง
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Global variables
+        let currentStudentData = null;
+        let currentRowIndex = -1;
+        let currentField = '';
+        
+        // DOM Elements
+        const searchInput = document.getElementById('searchInput');
+        const searchButton = document.getElementById('searchButton');
+        const resultsContainer = document.getElementById('resultsContainer');
+        const noResultsMessage = document.getElementById('noResultsMessage');
+        const loadingIndicator = document.getElementById('loading');
+        const editModal = document.getElementById('editModal');
+        const saveStickerBtn = document.getElementById('saveStickerBtn');
+        
+        // Tabs
+        const tabs = document.querySelectorAll('.tab');
+        const tabContents = document.querySelectorAll('.tab-content');
+        
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add event listeners
+            searchButton.addEventListener('click', searchStudent);
+            searchInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    searchStudent();
+                }
+            });
+            
+            // Tab switching
+            tabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    const tabName = this.getAttribute('data-tab');
+                    switchTab(tabName);
+                });
+            });
+            
+            // Save sticker number
+            saveStickerBtn.addEventListener('click', saveStickerNumber);
+        });
+        
+        // Switch between tabs
+        function switchTab(tabName) {
+            tabs.forEach(tab => {
+                if (tab.getAttribute('data-tab') === tabName) {
+                    tab.classList.add('active');
+                } else {
+                    tab.classList.remove('active');
+                }
+            });
+            
+            tabContents.forEach(content => {
+                if (content.id === tabName + 'Tab') {
+                    content.style.display = 'block';
+                } else {
+                    content.style.display = 'none';
+                }
+            });
+        }
+        
+        // Search for student data
+        async function searchStudent() {
+            const studentId = searchInput.value.trim();
+            
+            if (!studentId) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'กรุณากรอกรหัสนักศึกษา',
+                    confirmButtonColor: '#8FD694'
+                });
+                return;
+            }
+            
+            if (!/^\d{8}$/.test(studentId)) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'รหัสนักศึกษาไม่ถูกต้อง',
+                    text: 'กรุณากรอกรหัสนักศึกษาให้ครบ 8 หลัก และเป็นตัวเลขเท่านั้น',
+                    confirmButtonColor: '#8FD694'
+                });
+                return;
+            }
+            
+            loadingIndicator.style.display = 'flex';
+            
+            try {
+                // Call Google Apps Script to get student data
+                const scriptURL = 'https://script.google.com/macros/s/AKfycbwXIQuYT-gQonLD-ksxYXNv-B7aDz9Yq8cufoYdWo_Ft8FMUolNgwMe6z6cczyO7FMD/exec';
+                
+                const response = await fetch(`${scriptURL}?action=getStudentData&studentId=${studentId}`);
+                const data = await response.json();
+                
+                if (data.success && data.data) {
+                    // Store the data and row index
+                    currentStudentData = data.data;
+                    currentRowIndex = data.rowIndex;
+                    
+                    // Display the data
+                    displayStudentData(data.data);
+                    
+                    // Show results container
+                    resultsContainer.style.display = 'block';
+                    noResultsMessage.style.display = 'none';
+                    
+                    // Switch to info tab by default
+                    switchTab('info');
+                } else {
+                    // Show no results message
+                    resultsContainer.style.display = 'none';
+                    noResultsMessage.style.display = 'block';
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'เกิดข้อผิดพลาด',
+                    text: 'ไม่สามารถดึงข้อมูลได้ กรุณาลองใหม่อีกครั้ง',
+                    confirmButtonColor: '#8FD694'
+                });
+            } finally {
+                loadingIndicator.style.display = 'none';
+            }
+        }
+        
+        // Display student data in the UI
+        function displayStudentData(data) {
+            // Personal Info
+            document.getElementById('studentId').textContent = data.studentId || '-';
+            document.getElementById('fullName').textContent = data.fullName || '-';
+            document.getElementById('faculty').textContent = data.faculty || '-';
+            document.getElementById('phoneNumber').textContent = data.phoneNumber || '-';
+            document.getElementById('residence').textContent = data.residence || '-';
+            document.getElementById('addressDetail').textContent = data.addressDetail || '-';
+            
+            // Emergency Contact
+            document.getElementById('emergencyContact').textContent = data.emergencyContact || '-';
+            document.getElementById('relationship').textContent = data.relationship || '-';
+            document.getElementById('emergencyPhone').textContent = data.emergencyPhone || '-';
+            
+            // Vehicle Info
+            document.getElementById('vehicleType').textContent = data.vehicleType || '-';
+            document.getElementById('brand').textContent = data.brand || '-';
+            document.getElementById('licensePlate').textContent = data.licensePlate || '-';
+            document.getElementById('province').textContent = data.province || '-';
+            document.getElementById('color').textContent = data.color || '-';
+            
+            // Sticker Number
+            document.getElementById('stickerNumber').value = data.stickerNumber || '';
+            
+            // Images
+            if (data.frontImage) {
+                document.getElementById('frontImage').src = data.frontImage;
+                document.getElementById('frontImageContainer').style.display = 'block';
+            } else {
+                document.getElementById('frontImageContainer').style.display = 'none';
+            }
+            
+            if (data.backImage) {
+                document.getElementById('backImage').src = data.backImage;
+                document.getElementById('backImageContainer').style.display = 'block';
+            } else {
+                document.getElementById('backImageContainer').style.display = 'none';
+            }
+            
+            if (data.leftImage) {
+                document.getElementById('leftImage').src = data.leftImage;
+                document.getElementById('leftImageContainer').style.display = 'block';
+            } else {
+                document.getElementById('leftImageContainer').style.display = 'none';
+            }
+            
+            if (data.rightImage) {
+                document.getElementById('rightImage').src = data.rightImage;
+                document.getElementById('rightImageContainer').style.display = 'block';
+            } else {
+                document.getElementById('rightImageContainer').style.display = 'none';
+            }
+        }
+        
+        // Save sticker number
+        async function saveStickerNumber() {
+            const stickerNumber = document.getElementById('stickerNumber').value.trim();
+            
+            if (!currentStudentData || currentRowIndex === -1) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'ไม่พบข้อมูลนักศึกษา',
+                    text: 'กรุณาค้นหาข้อมูลนักศึกษาก่อน',
+                    confirmButtonColor: '#8FD694'
+                });
+                return;
+            }
+            
+            loadingIndicator.style.display = 'flex';
+            
+            try {
+                // Call Google Apps Script to update sticker number
+                const scriptURL = 'https://script.google.com/macros/s/AKfycbwXIQuYT-gQonLD-ksxYXNv-B7aDz9Yq8cufoYdWo_Ft8FMUolNgwMe6z6cczyO7FMD/exec';
+                
+                const formData = new FormData();
+                formData.append('action', 'updateStickerNumber');
+                formData.append('rowIndex', currentRowIndex);
+                formData.append('stickerNumber', stickerNumber);
+                
+                const response = await fetch(scriptURL, {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    // Update local data
+                    currentStudentData.stickerNumber = stickerNumber;
+                    
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'บันทึกข้อมูลสำเร็จ',
+                        text: 'บันทึกหมายเลขสติกเกอร์เรียบร้อยแล้ว',
+                        confirmButtonColor: '#8FD694'
+                    });
+                } else {
+                    throw new Error(result.error || 'เกิดข้อผิดพลาดในการบันทึกข้อมูล');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'เกิดข้อผิดพลาด',
+                    text: 'ไม่สามารถบันทึกข้อมูลได้ กรุณาลองใหม่อีกครั้ง',
+                    confirmButtonColor: '#8FD694'
+                });
+            } finally {
+                loadingIndicator.style.display = 'none';
+            }
+        }
+        
+        // Edit field
+        function editField(field) {
+            if (!currentStudentData) return;
+            
+            currentField = field;
+            let fieldValue = currentStudentData[field] || '';
+            let fieldLabel = '';
+            let inputType = 'text';
+            let options = [];
+            
+            // Set field label and options based on field name
+            switch (field) {
+                case 'studentId':
+                    fieldLabel = 'รหัสนักศึกษา';
+                    inputType = 'text';
+                    break;
+                case 'fullName':
+                    fieldLabel = 'ชื่อ-สกุล';
+                    inputType = 'text';
+                    break;
+                case 'faculty':
+                    fieldLabel = 'สำนักวิชา';
+                    inputType = 'select';
+                    options = [
+                        'การจัดการ', 'การบัญชีและการเงิน', 'เทคโนโลยีการเกษตรและอุตสาหกรรมอาหาร',
+                        'นิติศาสตร์', 'พยาบาลศาสตร์', 'แพทยศาสตร์', 'เภสัชศาสตร์',
+                        'รัฐศาสตร์และรัฐประศาสนศาสตร์', 'วิทยาศาสตร์', 'วิศวกรรมศาสตร์และเทคโนโลยี',
+                        'ศึกษาศาสตร์', 'ศิลปศาสตร์', 'สถาปัตยกรรมศาสตร์และการออกแบบ',
+                        'สหเวชศาสตร์', 'สาธารณสุขศาสตร์', 'สารสนเทศศาสตร์',
+                        'วิทยาลัยทันตแพทยศาสตร์นานาชาติ', 'วิทยาลัยนานาชาติ', 'วิทยาลัยสัตวแพทยศาสตร์อัครราชกุมารี'
+                    ];
+                    break;
+                case 'phoneNumber':
+                    fieldLabel = 'เบอร์โทรศัพท์';
+                    inputType = 'tel';
+                    break;
+                case 'residence':
+                    fieldLabel = 'ที่พักปัจจุบัน';
+                    inputType = 'radio';
+                    options = ['หอพักภายในมหาวิทยาลัย', 'หอพักภายนอกมหาวิทยาลัย', 'บ้านตนเอง'];
+                    break;
+                case 'addressDetail':
+                    fieldLabel = 'ชื่อหอพัก/หมายเลขห้อง/บ้านเลขที่';
+                    inputType = 'text';
+                    break;
+                case 'emergencyContact':
+                    fieldLabel = 'ชื่อ-สกุล ผู้ติดต่อกรณีฉุกเฉิน';
+                    inputType = 'text';
+                    break;
+                case 'relationship':
+                    fieldLabel = 'ความสัมพันธ์กับนักศึกษา';
+                    inputType = 'radio';
+                    options = ['บิดา/มารดา', 'ผู้ปกครอง', 'ญาติ', 'เพื่อน'];
+                    break;
+                case 'emergencyPhone':
+                    fieldLabel = 'เบอร์โทรศัพท์ผู้ติดต่อกรณีฉุกเฉิน';
+                    inputType = 'tel';
+                    break;
+                case 'vehicleType':
+                    fieldLabel = 'ประเภทรถ';
+                    inputType = 'select';
+                    options = ['รถยนต์(น้ำมัน)', 'รถยนต์ไฟฟ้า', 'รถจักรยานยนต์ไฟฟ้า'];
+                    break;
+                case 'brand':
+                    fieldLabel = 'ยี่ห้อรถ';
+                    inputType = 'text';
+                    break;
+                case 'licensePlate':
+                    fieldLabel = 'เลขทะเบียนรถ';
+                    inputType = 'text';
+                    break;
+                case 'province':
+                    fieldLabel = 'จังหวัด';
+                    inputType = 'select';
+                    options = [
+                        'ป้ายแดง', 'ไม่สามารถจดทะเบียนได้', 'กรุงเทพมหานคร', 'กระบี่', 'กาญจนบุรี',
+                        'กาฬสินธุ์', 'กำแพงเพชร', 'ขอนแก่น', 'จันทบุรี', 'ฉะเชิงเทรา',
+                        'ชลบุรี', 'ชัยนาท', 'ชัยภูมิ', 'ชุมพร', 'เชียงราย',
+                        'เชียงใหม่', 'ตรัง', 'ตราด', 'ตาก', 'นครนายก',
+                        'นครปฐม', 'นครพนม', 'นครราชสีมา', 'นครศรีธรรมราช', 'นครสวรรค์',
+                        'นนทบุรี', 'นราธิวาส', 'น่าน', 'บึงกาฬ', 'บุรีรัมย์',
+                        'ปทุมธานี', 'ประจวบคีรีขันธ์', 'ปราจีนบุรี', 'ปัตตานี', 'พระนครศรีอยุธยา',
+                        'พะเยา', 'พังงา', 'พัทลุง', 'พิจิตร', 'พิษณุโลก',
+                        'เพชรบุรี', 'เพชรบูรณ์', 'แพร่', 'ภูเก็ต', 'มหาสารคาม',
+                        'มุกดาหาร', 'แม่ฮ่องสอน', 'ยโสธร', 'ยะลา', 'ร้อยเอ็ด',
+                        'ระนอง', 'ระยอง', 'ราชบุรี', 'ลพบุรี', 'ลำปาง',
+                        'ลำพูน', 'เลย', 'ศรีสะเกษ', 'สกลนคร', 'สงขลา',
+                        'สตูล', 'สมุทรปราการ', 'สมุทรสงคราม', 'สมุทรสาคร', 'สระแก้ว',
+                        'สระบุรี', 'สิงห์บุรี', 'สุโขทัย', 'สุพรรณบุรี', 'สุราษฎร์ธานี',
+                        'สุรินทร์', 'หนองคาย', 'หนองบัวลำภู', 'อ่างทอง', 'อำนาจเจริญ',
+                        'อุดรธานี', 'อุตรดิตถ์', 'อุทัยธานี', 'อุบลราชธานี'
+                    ];
+                    break;
+                case 'color':
+                    fieldLabel = 'สีรถ';
+                    inputType = 'text';
+                    break;
+                default:
+                    fieldLabel = field;
+                    inputType = 'text';
+            }
+            
+            // Create form content based on input type
+            let formContent = `<label class="form-label">${fieldLabel}</label>`;
+            
+            if (inputType === 'text' || inputType === 'tel') {
+                formContent += `<input type="${inputType}" id="editInput" class="form-input" value="${fieldValue}">`;
+            } else if (inputType === 'select') {
+                formContent += `<select id="editInput" class="form-input">`;
+                options.forEach(option => {
+                    const selected = option === fieldValue ? 'selected' : '';
+                    formContent += `<option value="${option}" ${selected}>${option}</option>`;
+                });
+                formContent += `</select>`;
+            } else if (inputType === 'radio') {
+                options.forEach((option, index) => {
+                    const checked = option === fieldValue ? 'checked' : '';
+                    formContent += `
+                        <div class="flex items-center mb-2">
+                            <input type="radio" id="editOption${index}" name="editInput" value="${option}" ${checked} class="mr-2">
+                            <label for="editOption${index}">${option}</label>
+                        </div>
+                    `;
+                });
+            }
+            
+            // Set form content
+            document.getElementById('editForm').innerHTML = formContent;
+            
+            // Show modal
+            editModal.style.display = 'block';
+        }
+        
+        // Close edit modal
+        function closeEditModal() {
+            editModal.style.display = 'none';
+        }
+        
+        // Save edited field
+        async function saveEdit() {
+            if (!currentStudentData || currentRowIndex === -1 || !currentField) {
+                closeEditModal();
+                return;
+            }
+            
+            let newValue = '';
+            
+            // Get value based on input type
+            if (document.getElementById('editInput')) {
+                newValue = document.getElementById('editInput').value;
+            } else {
+                // For radio buttons
+                const selectedRadio = document.querySelector('input[name="editInput"]:checked');
+                if (selectedRadio) {
+                    newValue = selectedRadio.value;
+                }
+            }
+            
+            // Validate input if needed
+            if (currentField === 'studentId' && !/^\d{8}$/.test(newValue)) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'รหัสนักศึกษาไม่ถูกต้อง',
+                    text: 'กรุณากรอกรหัสนักศึกษาให้ครบ 8 หลัก และเป็นตัวเลขเท่านั้น',
+                    confirmButtonColor: '#8FD694'
+                });
+                return;
+            }
+            
+            if ((currentField === 'phoneNumber' || currentField === 'emergencyPhone') && 
+                !/^0\d{9}$/.test(newValue)) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'เบอร์โทรศัพท์ไม่ถูกต้อง',
+                    text: 'กรุณากรอกเบอร์โทรศัพท์ให้ครบ 10 หลัก และขึ้นต้นด้วย 0',
+                    confirmButtonColor: '#8FD694'
+                });
+                return;
+            }
+            
+            loadingIndicator.style.display = 'flex';
+            closeEditModal();
+            
+            try {
+                // Call Google Apps Script to update field
+                const scriptURL = 'https://script.google.com/macros/s/AKfycbwXIQuYT-gQonLD-ksxYXNv-B7aDz9Yq8cufoYdWo_Ft8FMUolNgwMe6z6cczyO7FMD/exec';
+                
+                const formData = new FormData();
+                formData.append('action', 'updateField');
+                formData.append('rowIndex', currentRowIndex);
+                formData.append('field', currentField);
+                formData.append('value', newValue);
+                
+                const response = await fetch(scriptURL, {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    // Update local data
+                    currentStudentData[currentField] = newValue;
+                    
+                    // Update UI
+                    document.getElementById(currentField).textContent = newValue;
+                    
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'บันทึกข้อมูลสำเร็จ',
+                        text: 'แก้ไขข้อมูลเรียบร้อยแล้ว',
+                        confirmButtonColor: '#8FD694'
+                    });
+                } else {
+                    throw new Error(result.error || 'เกิดข้อผิดพลาดในการบันทึกข้อมูล');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'เกิดข้อผิดพลาด',
+                    text: 'ไม่สามารถบันทึกข้อมูลได้ กรุณาลองใหม่อีกครั้ง',
+                    confirmButtonColor: '#8FD694'
+                });
+            } finally {
+                loadingIndicator.style.display = 'none';
+            }
+        }
+        
+        // Open image modal
+        function openImageModal(src) {
+            const modal = document.getElementById('imageModal');
+            const modalImg = document.getElementById('modalImage');
+            
+            modal.style.display = 'flex';
+            modalImg.src = src;
+        }
+        
+        // Close image modal
+        function closeImageModal() {
+            document.getElementById('imageModal').style.display = 'none';
+        }
+        
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('imageModal');
+            if (event.target == modal) {
+                modal.style.display = 'none';
+            }
+            
+            const editModal = document.getElementById('editModal');
+            if (event.target == editModal) {
+                editModal.style.display = 'none';
+            }
+        }
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'94d1c08ba092732e',t:'MTc0OTQ4Mzg4Ni4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
