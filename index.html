@@ -188,7 +188,7 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
   <script>
     // URL ของ Web App
-    const webAppUrl = 'https://script.google.com/macros/s/AKfycbwXIQuYT-gQonLD-ksxYXNv-B7aDz9Yq8cufoYdWo_Ft8FMUolNgwMe6z6cczyO7FMD/exec';
+    const webAppUrl = 'https://script.google.com/macros/s/AKfycbwXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX/exec';
     
     // ตัวแปรสำหรับเก็บข้อมูลนักศึกษาและแถวในสเปรดชีต
     let currentStudentData = null;
@@ -291,25 +291,25 @@
           <div class="col-md-3">
             <div class="image-container">
               <h5>ด้านหน้า</h5>
-              ${createImageElement(data.frontImage, 'ด้านหน้า')}
+              <img src="${fixGoogleDriveUrl(data.frontImage)}" alt="ด้านหน้า" class="img-fluid vehicle-image" onerror="this.onerror=null; this.src='https://via.placeholder.com/300x200?text=ไม่พบรูปภาพ';">
             </div>
           </div>
           <div class="col-md-3">
             <div class="image-container">
               <h5>ด้านหลัง</h5>
-              ${createImageElement(data.backImage, 'ด้านหลัง')}
+              <img src="${fixGoogleDriveUrl(data.backImage)}" alt="ด้านหลัง" class="img-fluid vehicle-image" onerror="this.onerror=null; this.src='https://via.placeholder.com/300x200?text=ไม่พบรูปภาพ';">
             </div>
           </div>
           <div class="col-md-3">
             <div class="image-container">
               <h5>ด้านซ้าย</h5>
-              ${createImageElement(data.leftImage, 'ด้านซ้าย')}
+              <img src="${fixGoogleDriveUrl(data.leftImage)}" alt="ด้านซ้าย" class="img-fluid vehicle-image" onerror="this.onerror=null; this.src='https://via.placeholder.com/300x200?text=ไม่พบรูปภาพ';">
             </div>
           </div>
           <div class="col-md-3">
             <div class="image-container">
               <h5>ด้านขวา</h5>
-              ${createImageElement(data.rightImage, 'ด้านขวา')}
+              <img src="${fixGoogleDriveUrl(data.rightImage)}" alt="ด้านขวา" class="img-fluid vehicle-image" onerror="this.onerror=null; this.src='https://via.placeholder.com/300x200?text=ไม่พบรูปภาพ';">
             </div>
           </div>
         </div>
@@ -317,63 +317,54 @@
       
       // แสดงรูปภาพในพื้นที่ผลลัพธ์
       document.getElementById('vehicleImages').innerHTML = html;
+    }
+    
+    // ฟังก์ชันสำหรับแก้ไข URL ของ Google Drive
+    function fixGoogleDriveUrl(url) {
+      if (!url) return '';
       
-      // เพิ่มการตรวจสอบว่ารูปภาพโหลดสำเร็จหรือไม่
-      document.querySelectorAll('.vehicle-image').forEach(img => {
-        img.addEventListener('load', function() {
-          console.log('รูปภาพโหลดสำเร็จ:', this.src);
-        });
+      // ตรวจสอบว่าเป็น URL ของ Google Drive หรือไม่
+      if (url.includes('drive.google.com')) {
+        // ดึง file ID จาก URL
+        let fileId = '';
         
-        img.addEventListener('error', function() {
-          console.error('ไม่สามารถโหลดรูปภาพ:', this.src);
-          // ลองแปลง URL อีกครั้ง
-          if (this.src.includes('drive.google.com')) {
-            const fileIdMatch = this.src.match(/[-\w]{25,}/);
-            if (fileIdMatch && fileIdMatch[0]) {
-              const newUrl = "https://drive.google.com/uc?export=view&id=" + fileIdMatch[0];
-              console.log('ลองใช้ URL ใหม่:', newUrl);
-              this.src = newUrl;
-            }
+        // กรณี URL รูปแบบ https://drive.google.com/file/d/FILE_ID/view
+        if (url.includes('/file/d/')) {
+          const match = url.match(/\/file\/d\/([^\/]+)/);
+          if (match && match[1]) {
+            fileId = match[1];
           }
-        });
-      });
-    }
-    
-    // ฟังก์ชันสำหรับสร้าง element รูปภาพ
-    function createImageElement(imageUrl, altText) {
-      if (imageUrl && imageUrl.trim() !== '') {
-        return `<img src="${imageUrl}" alt="${altText}" class="img-fluid vehicle-image" onerror="handleImageError(this)">`;
-      } else {
-        return `<div class="image-not-found"><i class="fas fa-image fa-3x mb-2"></i><br>ไม่พบรูปภาพ</div>`;
-      }
-    }
-    
-    // ฟังก์ชันสำหรับจัดการเมื่อรูปภาพไม่สามารถโหลดได้
-    function handleImageError(img) {
-      console.error('ไม่สามารถโหลดรูปภาพ:', img.src);
-      
-      // ลองแปลง URL อีกครั้ง
-      if (img.src.includes('drive.google.com')) {
-        const fileIdMatch = img.src.match(/[-\w]{25,}/);
-        if (fileIdMatch && fileIdMatch[0]) {
-          const newUrl = "https://drive.google.com/uc?export=view&id=" + fileIdMatch[0];
-          console.log('ลองใช้ URL ใหม่:', newUrl);
-          img.src = newUrl;
-          
-          // เพิ่ม event listener เพื่อตรวจสอบว่ารูปภาพโหลดสำเร็จหรือไม่หลังจากเปลี่ยน URL
-          img.onerror = function() {
-            // ถ้ายังไม่สามารถโหลดได้ ให้แสดงรูปภาพ placeholder
-            this.onerror = null;
-            this.src = 'https://via.placeholder.com/300x200?text=ไม่พบรูปภาพ';
-          };
-          
-          return;
+        } 
+        // กรณี URL รูปแบบ https://drive.google.com/open?id=FILE_ID
+        else if (url.includes('open?id=')) {
+          const match = url.match(/open\?id=([^&]+)/);
+          if (match && match[1]) {
+            fileId = match[1];
+          }
+        }
+        // กรณี URL รูปแบบ https://drive.google.com/uc?export=view&id=FILE_ID
+        else if (url.includes('uc?export=view&id=')) {
+          const match = url.match(/id=([^&]+)/);
+          if (match && match[1]) {
+            fileId = match[1];
+          }
+        }
+        // กรณีอื่นๆ ลองหา ID ที่มีรูปแบบเป็นตัวอักษรและตัวเลข 25-33 ตัว
+        else {
+          const match = url.match(/[-\w]{25,33}/);
+          if (match) {
+            fileId = match[0];
+          }
+        }
+        
+        // ถ้าพบ file ID ให้สร้าง URL ใหม่
+        if (fileId) {
+          return `https://drive.google.com/uc?export=view&id=${fileId}`;
         }
       }
       
-      // ถ้าไม่สามารถแปลง URL ได้ ให้แสดงรูปภาพ placeholder
-      img.onerror = null;
-      img.src = 'https://via.placeholder.com/300x200?text=ไม่พบรูปภาพ';
+      // ถ้าไม่ใช่ URL ของ Google Drive หรือไม่สามารถแปลงได้ ให้ส่งคืน URL เดิม
+      return url;
     }
     
     // ฟังก์ชันสำหรับแสดงข้อมูลการจัดการ
@@ -461,5 +452,5 @@
         });
     });
   </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'94d20747513a74d4',t:'MTc0OTQ4Njc4Mi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'94d211a083897325',t:'MTc0OTQ4NzIwNi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
